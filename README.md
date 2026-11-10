@@ -9,7 +9,7 @@ Source snapshots of four ChatGPT Sites, organized as independent projects.
 | `service-desk/` | https://servicedesk-hub-ed-2026.ed4mali.chatgpt.site |
 | `towdesk/` | https://towdesk-ed.ed4mali.chatgpt.site |
 
-Each folder retains its original source structure and `.openai/hosting.json` configuration. Business data and runtime secrets are not included. The static sites keep their deployable files in `dist/`; Service Desk contains its own server build configuration. TowDesk is now a static browser-local app; its deployable files are also in `towdesk/dist/`.
+Each folder retains its original source structure and `.openai/hosting.json` configuration. Business data and runtime secrets are not included. The static sites keep their deployable files in `dist/`; Service Desk and TowDesk contain their own server build configuration. TowDesk stores application records in D1 and attachments in R2.
 
 This repository is a source backup. A ChatGPT scheduled task checks for source updates hourly, using `sites-sync.json` for project mappings and `source-snapshots.json` for the last synchronized source commits. Changes flow from ChatGPT Sites into GitHub. This does not deploy GitHub changes back to the live websites. Run each project independently from its own folder.
 

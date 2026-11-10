@@ -1,18 +1,51 @@
-# TowDesk — Static edition
+# TowDesk
 
-A browser-local towing dispatch workspace. Deployment consists only of `dist/index.html` and `dist/assets/`; no server, database binding, or API endpoint is required.
+A private, owner-operated towing workspace built with React/Vinext, Cloudflare D1 and R2.
 
-## Build
+## Included workflows
 
-```sh
-npm ci
-npm run build
-```
+- Overview: setup checklist, unassigned jobs, overdue balances and service reminders.
+- Dispatch: customer/vehicle details, driver and truck assignments, priority, statuses, checklists, search and filters.
+- Schedule: dated pickups and unscheduled active jobs.
+- Customers: reusable contacts, linked job history and outstanding balances.
+- Drivers and fleet: availability, default trucks, mileage, maintenance and expiry dates.
+- Impound: intake, lot and bay, requesting agency, release recipient/date, explicit storage-charge calculation.
+- Billing: itemized charges, discount, configurable tax, partial payments, invoice printing/PDF via browser.
+- Photos/documents: authenticated JPEG, PNG, WebP and PDF attachments, 5 MB per file.
+- Reports: date-filtered job metrics, payments, service mix and driver workload.
+- Settings: company invoice details, default rates/terms and full JSON record export.
+- Archive/restore and append-only change summaries.
 
-Serve `dist/` as the site root using any static host, including GitHub Pages. Asset paths are relative so repository subpaths work. Deploy the `towdesk/dist` folder independently from the other sites in the Websites repository.
+Practice data is separate and resets on reload. The browser stores only the selected practice/live preference. Live records and attachments are server persisted and scoped to the authenticated owner. Site access remains owner-private.
 
-## Data
+## Boundaries
 
-Practice mode uses sample records that reset on reload. Browser workspace records and activity use localStorage; attachments use IndexedDB (5 MB maximum per file). Browser workspace begins empty. Export JSON/CSV records in Settings and download attachments from each job for backups. Clearing site data, changing devices, or using a different site origin does not preserve or share local records. Existing cloud data is not imported or deleted by this conversion. No cloud synchronization, separate logins, GPS, SMS, or card processing is provided.
+This release does not provide employee accounts, shared team dispatch, automatic communications, live GPS, payment processing, motor-club integrations, statutory impound notices or lien sales. Payments are manually recorded receipts, not card charges or refunds. Reports are operational summaries, not an accounting ledger. JSON export includes attachment metadata, not file bytes; download files individually. JSON import is not implemented.
 
-The dispatch, schedule, customers, drivers, fleet, impound, billing, reports, archive/restore, activity, file attachment, and invoice print/PDF screens remain available. The historical database migrations are retained for reference; they are not used by the static site.
+Storage calculations count inclusive calendar days and only update charges when explicitly selected. Users must apply their actual business rates and rules. Tax defaults to zero. Changes to default rates do not change existing jobs. Schedule dates use local browser time. Report job cohorts use recorded creation dates; cash collections use payment-entry dates.
+
+## Implementation
+
+- `app/page.tsx`: navigation and workspace views.
+- `app/components/`: job editor, generic record editor, invoices, reports, settings and accessible modal primitives.
+- `lib/domain.ts`: money calculations, legacy conversion, exports and shared models.
+- `lib/validation.ts`: shared Zod input validation.
+- `app/api/records`: authenticated scoped records; optimistic concurrency; transactional audit summaries.
+- `app/api/activity`: latest 100 scoped events, optionally filtered by job.
+- `app/api/files`: authenticated R2 upload/download with MIME and file signature checks.
+- `db/schema.ts` and `drizzle/`: immutable, versioned database migrations.
+
+Existing first-release jobs are normalized on read: the original amount becomes one invoice line, and an existing paid flag becomes a legacy payment entry. Original identifiers are retained. Audit history begins with the next change; prior events are not fabricated.
+
+## Verification
+
+Run `node tests/verify.mjs` and `node node_modules/typescript/bin/tsc --noEmit`.
+The functional suite uses an in-memory SQLite database and a D1 adapter to execute actual API logic. It covers calculations, legacy conversion, input validation, record ownership, invalid origins, stale writes, reference ownership, partial-payment limits, archive/restore and audit history.
+
+Use the Sites build and source workflow for publication. Keep credentials out of source. Hosting identity and D1/R2 bindings are in `.openai/hosting.json`. Apply only pending migrations for local previews; production migrations are applied by Sites publication.
+
+## Database edition restoration
+
+TowDesk is again a server-backed application. `.openai/hosting.json` binds structured data to D1 (`DB`) and attachments to R2 (`BUCKET`). Migrations are applied by Sites publication. The default workspace loads authenticated database records; practice mode remains separate. Browser-only records from the static edition are not imported automatically. Settings includes an export for the old browser record store when present on the same site origin.
+
+Run `npm test` to verify database workflows and access checks, and `npm run build` for the Worker build.
