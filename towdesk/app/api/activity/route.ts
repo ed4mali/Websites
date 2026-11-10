@@ -1,0 +1,2 @@
+import {env} from 'cloudflare:workers';
+export async function GET(req:Request){const owner=req.headers.get('oai-authenticated-user-id');if(!owner)return Response.json({error:'Sign in required'},{status:401});const id=new URL(req.url).searchParams.get('record');const stmt=id?env.DB!.prepare('SELECT * FROM events WHERE owner=? AND record_id=? ORDER BY created DESC LIMIT 100').bind(owner,id):env.DB!.prepare('SELECT * FROM events WHERE owner=? ORDER BY created DESC LIMIT 100').bind(owner);return Response.json((await stmt.all()).results,{headers:{'Cache-Control':'no-store'}});}

@@ -1,0 +1,11 @@
+(()=>{
+const goals={operations:{title:'Start with a business application',text:'A focused internal application can bring records, approvals, and reporting into one workflow. Begin by listing the manual tasks your team repeats most.',service:'Business application'},customers:{title:'Explore a customer portal',text:'Give customers a clear place to submit requests, view information, and follow updates. Start with the three things your customers ask for most.',service:'Business application'},custom:{title:'Plan your custom software',text:'Turn your unique idea into a practical first release. Start with the problem, the people using the software, and the systems it should connect to.',service:'Custom software'}};
+document.querySelectorAll('[data-goal]').forEach(button=>button.addEventListener('click',()=>{const g=goals[button.dataset.goal];document.querySelectorAll('[data-goal]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));const r=document.getElementById('solution-result');r.hidden=false;r.innerHTML=`<strong>${g.title}</strong><p>${g.text}</p><a href="#contact">Create a project brief for this solution ›</a>`;document.getElementById('service').value=g.service;}));
+const toggle=document.querySelector('.menu-toggle'),nav=document.getElementById('main-nav');
+function close(){nav.classList.remove('menu-open');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Open navigation');}
+toggle.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')!=='true';nav.classList.toggle('menu-open',open);toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Close navigation':'Open navigation');});
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));document.addEventListener('keydown',e=>{if(e.key==='Escape'&&toggle.getAttribute('aria-expanded')==='true'){close();toggle.focus();}});
+})();
+;(()=>{
+document.getElementById('solution-search').addEventListener('submit',e=>{e.preventDefault();const q=document.getElementById('solution-query').value.toLowerCase();const goal=/customer|portal|client|book|appointment/.test(q)?'customers':/custom|unique|idea|api|integrat/.test(q)?'custom':'operations';document.querySelector(`[data-goal="${goal}"]`).click();});
+})();

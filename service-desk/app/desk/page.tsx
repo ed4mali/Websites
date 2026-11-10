@@ -1,0 +1,3 @@
+import Desk from '../Desk';import {requireChatGPTUser,chatGPTSignOutPath} from '../chatgpt-auth';import {actor} from '../access';
+export const dynamic='force-dynamic';
+export default async function Workspace(){await requireChatGPTUser('/desk');const a=await actor();if(!a||a.role==='pending')return <main className="logincard" style={{margin:'10vh auto'}}><h1>Access awaiting approval</h1><p>Your account has no active Ubernyx role. Ask the administrator to approve your email address.</p><a className="primary loginbutton" href={chatGPTSignOutPath('/')} target="_top">Sign out</a></main>;return <Desk operator={a.email} role={a.role} signOut={chatGPTSignOutPath('/')}/>}
