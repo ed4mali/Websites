@@ -11,6 +11,8 @@ Source snapshots of four ChatGPT Sites, organized as independent projects.
 
 Each folder retains its original source structure and `.openai/hosting.json` configuration. Business data and runtime secrets are not included. The static sites keep their deployable files in `dist/`; the other projects contain their own dependency and build configuration.
 
-This repository is a source backup. Uploading these files does not change the existing live websites or establish automatic synchronization or deployment. Run each project independently from its own folder.
+This repository is a source backup. A ChatGPT scheduled task checks for source updates hourly, using `sites-sync.json` for project mappings and `source-snapshots.json` for the last synchronized source commits. Changes flow from ChatGPT Sites into GitHub. This does not deploy GitHub changes back to the live websites. Run each project independently from its own folder.
+
+The task preserves edits made directly in GitHub: if a destination folder differs from its last synchronized source snapshot, it reports the conflict instead of overwriting it. It commits only changed sources and updates the snapshot record after a verified push. Credentials are obtained at runtime and are never stored here.
 
 See `source-snapshots.json` for the original Sites source commits.
