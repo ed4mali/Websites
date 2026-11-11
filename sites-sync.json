@@ -4,9 +4,23 @@
   "branch": "main",
   "conflict_policy": "preserve-github-edits-and-report",
   "sites": [
-    {"folder": "ubernyx", "project_id": "appgprj_6af2e8e3dd888191a9d7e3249167887d"},
-    {"folder": "ubernyx-gear", "project_id": "appgprj_6af0a11b7efc81918c63830726949e37"},
-    {"folder": "service-desk", "project_id": "appgprj_6ae86502b89481919728b05e4da1df66"},
-    {"folder": "towdesk", "project_id": "appgprj_6ae06e23be708191a05d88f6d2aac7b1"}
-  ]
+    {
+      "folder": "ubernyx",
+      "project_id": "appgprj_6af2e8e3dd888191a9d7e3249167887d"
+    },
+    {
+      "folder": "ubernyx-gear",
+      "project_id": "appgprj_6af0a11b7efc81918c63830726949e37"
+    },
+    {
+      "folder": "service-desk",
+      "project_id": "appgprj_6ae86502b89481919728b05e4da1df66"
+    }
+  ],
+  "moved_client": {
+    "repository": "Ubernyx-LLC/Dev",
+    "folder": "towdesk-cloudflare",
+    "mode": "reconcile-through-pull-request",
+    "note": "towdesk/ remains a historical hosted-site snapshot; the hourly task no longer writes it."
+  }
 }

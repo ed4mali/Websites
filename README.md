@@ -16,3 +16,7 @@ This repository is a source backup. A ChatGPT scheduled task checks for source u
 The task preserves edits made directly in GitHub: if a destination folder differs from its last synchronized source snapshot, it reports the conflict instead of overwriting it. It commits only changed sources and updates the snapshot record after a verified push. Credentials are obtained at runtime and are never stored here.
 
 See `source-snapshots.json` for the original Sites source commits.
+
+## TowDesk client synchronization
+
+The hourly task now reconciles TowDesk client-edition source into [Ubernyx-LLC/Dev/towdesk-cloudflare](https://github.com/Ubernyx-LLC/Dev/tree/main/towdesk-cloudflare) through pull requests and checks. The `towdesk/` folder here is a historical hosted-site snapshot. The other three Sites continue their existing backups into this repository.
